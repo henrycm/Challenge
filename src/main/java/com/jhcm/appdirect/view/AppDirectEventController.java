@@ -1,9 +1,6 @@
 package com.jhcm.appdirect.view;
 
-import javax.ws.rs.core.Context;
-
 import org.apache.log4j.Logger;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,10 +16,10 @@ public class AppDirectEventController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public String event(@RequestParam(value = "eventUrl", required = false) String eventUrl,
-			@RequestParam(value = "token", required = false) String tokenfinal, @Context SecurityContext securityContext) {
+			@RequestParam(value = "token", required = false) String token) {
 		log.debug("Event!");
 		log.debug("Url:" + eventUrl);
-		log.debug("token:" + eventUrl);
+		log.debug("token:" + token);
 		return "OK";
 	}
 }
