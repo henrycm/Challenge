@@ -23,7 +23,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.openidLogin().and().authorizeRequests().antMatchers("/auth/*").permitAll().anyRequest().authenticated();
+		http.openidLogin().loginPage("/auth/login.jsp").defaultSuccessUrl("/").and().authorizeRequests()
+				.antMatchers("/auth/*").permitAll().anyRequest().authenticated();
 		http.csrf().disable();
 
 	}

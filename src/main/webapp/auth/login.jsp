@@ -9,18 +9,16 @@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Open ID Login</title>
 </head>
 <body>
-
-	<h1>Or, Log Into Your Account with OpenID</h1>
 	<p>Please use the form below to log into your account with OpenID.
 	</p>
-	<form action="/Auditing/j_spring_openid_security_check" method="post">
-		<label for="openid_identifier">Login</label>: <input
-			id="openid_identifier" name="openid_identifier" size="20"
-			maxlength="100" type="text" /> <img src="images/openid.png"
-			alt="OpenID" /> <br /> <input type="submit" value="Login" />
+	<form action="/Challenge/login/openid" method="post">
+		<input id="openid_identifier" name="openid_identifier" size="20"
+			maxlength="100" type="hidden"
+			value="https://www.appdirect.com/openid/id" /><input type="submit"
+			value="Login" />
 	</form>
 
 </body>
