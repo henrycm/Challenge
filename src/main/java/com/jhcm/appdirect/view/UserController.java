@@ -4,33 +4,25 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.jhcm.appdirect.backend.model.User;
-import com.jhcm.appdirect.backend.service.UserService;
+import com.jhcm.appdirect.backend.service.AccountService;
 
 @Controller
 public class UserController {
 
 	@Resource
-	UserService uservice;
+	private AccountService accountService;
 
 	@RequestMapping(value = "/")
 	public String init() {
 		return "redirect:list";
 	}
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String save(final User user, BindingResult result, ModelMap model) {
-		uservice.save(user);
-		return "redirect:list";
-	}
-
 	@RequestMapping(value = "/list")
 	public String list(ModelMap model) {
-		model.addAttribute("users", uservice.list());
+		model.addAttribute("users", accountService.listUsers());
 		model.addAttribute("user", new User());
 		return "user";
 	}
