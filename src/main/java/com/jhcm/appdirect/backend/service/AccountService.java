@@ -30,18 +30,12 @@ public class AccountService {
 	@Resource
 	private EventLogRepository lrepo;
 
-	public void handleEvent(String url) {
+	public void handleEvent(String url) throws Exception {
 		Event ev = null;
 		if (url != null) {
 			String xml = remoteService.getXml(url);
-			log.debug(xml);
-			EventLog el = new EventLog();
-			el.setDate(new Date());
-			el.setXml(xml);
-			el.setUrl(url);
-			lrepo.save(el);
+			logEvent(xml, url);
 			ev = remoteService.getFromXml(xml);
-			log.debug(xml);
 		}
 
 		log.debug("EventType:" + ev.getType());
@@ -67,11 +61,12 @@ public class AccountService {
 		u.setLanguage(ev.getPayload().getUser().getLanguage());
 		u.setOpenId(ev.getPayload().getUser().getOpenId());
 		Account a = u.getAccount();
-		if (a == null)
+		if (a == null && ev.getPayload().getAccount().getAccountIdentifier() != null) {
 			a = new Account();
-		a.setAccountIdentifier(ev.getPayload().getAccount().getAccountIdentifier());
-		a.setStatus(ev.getPayload().getAccount().getStatus());
-		u.setAccount(a);
+			a.setAccountIdentifier(ev.getPayload().getAccount().getAccountIdentifier());
+			a.setStatus(ev.getPayload().getAccount().getStatus());
+			u.setAccount(a);
+		}
 		urepo.save(u);
 	}
 
@@ -79,5 +74,18 @@ public class AccountService {
 		User u = urepo.findByEmail(ev.getPayload().getUser().getEmail());
 		if (u != null)
 			urepo.delete(u);
+	}
+
+	private void logEvent(String xml, String url) {
+		try {
+			log.debug("XML:" + xml);
+			EventLog el = new EventLog();
+			el.setDate(new Date());
+			el.setXml(xml);
+			el.setUrl(url);
+			lrepo.save(el);
+		} catch (Exception e) {
+			log.warn(e);
+		}
 	}
 }
