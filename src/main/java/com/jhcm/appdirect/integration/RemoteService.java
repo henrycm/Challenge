@@ -43,12 +43,13 @@ public class RemoteService {
 	}
 
 	public String getXml(String url) {
+		String signed_url = signService.sign(url);
 		RestTemplate rest = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_XML));
 		HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
 
-		ResponseEntity<String> response = rest.exchange(url, HttpMethod.GET, entity, String.class);
+		ResponseEntity<String> response = rest.exchange(signed_url, HttpMethod.GET, entity, String.class);
 		String xml = response.getBody();
 		return xml;
 	}
