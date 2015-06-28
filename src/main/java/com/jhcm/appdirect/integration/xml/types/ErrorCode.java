@@ -1,4 +1,4 @@
-package com.jhcm.appdirect.integration.xml;
+package com.jhcm.appdirect.integration.xml.types;
 
 public enum ErrorCode {
 	USER_ALREADY_EXISTS,

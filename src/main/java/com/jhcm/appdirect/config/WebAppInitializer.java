@@ -18,6 +18,7 @@ public class WebAppInitializer implements WebApplicationInitializer {
 
 		AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
 
+		rootContext.register(AppConfig.class);
 		rootContext.register(MVCConfig.class);
 		rootContext.register(PersistenceConfig.class);
 		rootContext.register(SecurityConfig.class);

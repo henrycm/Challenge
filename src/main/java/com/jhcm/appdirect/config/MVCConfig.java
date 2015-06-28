@@ -3,8 +3,6 @@ package com.jhcm.appdirect.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -12,9 +10,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
+@ComponentScan(basePackages = { "com.jhcm.appdirect.view" })
 @EnableWebMvc
-@ComponentScan(basePackages = { "com.jhcm.appdirect" })
-@PropertySources({ @PropertySource("classpath:application.properties") })
 public class MVCConfig extends WebMvcConfigurerAdapter {
 
 	@Override

@@ -1,10 +1,10 @@
-package com.jhcm.appdirect.integration.xml.types;
+package com.jhcm.appdirect.integration.xml;
 
 import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.jhcm.appdirect.integration.xml.ErrorCode;
+import com.jhcm.appdirect.integration.xml.types.ErrorCode;
 
 @XmlRootElement(name = "result")
 public class Result implements Serializable {
