@@ -60,7 +60,7 @@ public class AccountService {
 	}
 
 	private Result handleUserAssignment(Event ev) {
-		User u = urepo.findByEmail(ev.getPayload().getUser().getEmail());
+		User u = urepo.findByOpenId(ev.getPayload().getUser().getOpenId());
 		if (u == null) {
 			u = new User();
 			log.debug("Creating user:" + ev.getPayload().getUser().getEmail());
@@ -82,14 +82,14 @@ public class AccountService {
 	}
 
 	private Result handleUserUnassignment(Event ev) {
-		User u = urepo.findByEmail(ev.getPayload().getUser().getEmail());
+		User u = urepo.findByOpenId(ev.getPayload().getUser().getOpenId());
 		if (u != null)
 			urepo.delete(u);
 		return new Result(true, "Succeed");
 	}
 
 	private Result handleSubscriptionOrder(Event ev) throws Exception {
-		User u = urepo.findByEmail(ev.getCreator().getEmail());
+		User u = urepo.findByOpenId(ev.getCreator().getOpenId());
 		if (u != null) {
 			u.getAccount().setEditionCode(
 					ev.getPayload().getOrder().getEditionCode());
@@ -102,7 +102,7 @@ public class AccountService {
 	}
 
 	private Result handleSubscriptionCancell(Event ev) {
-		User u = urepo.findByEmail(ev.getCreator().getEmail());
+		User u = urepo.findByOpenId(ev.getCreator().getOpenId());
 		if (u != null) {
 			arepo.delete(u.getAccount());
 			return new Result(true, "Succeed");

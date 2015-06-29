@@ -7,5 +7,5 @@ import com.jhcm.appdirect.backend.model.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
 	User findByEmail(String email);
-
+	User findByOpenId(String openid);
 }

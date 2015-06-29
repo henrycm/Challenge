@@ -19,6 +19,8 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
+	private String uuid;
 	private String email;
 	private String firstName;
 	private String language;
@@ -72,7 +74,8 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "[email:" + this.getEmail() + ", name:" + this.getFirstName() + "]";
+		return "[email:" + this.getEmail() + ", name:" + this.getFirstName()
+				+ "]";
 	}
 
 	public Long getId() {
@@ -97,6 +100,14 @@ public class User implements Serializable {
 
 	public void setLastUpdate(Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	@PreUpdate
