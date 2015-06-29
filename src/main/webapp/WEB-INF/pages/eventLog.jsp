@@ -1,17 +1,18 @@
-
-
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <t:master title="Event logs">
 	<jsp:attribute name="footer">
 	<script>
-		$("#cmdDetails").bind("click", function() {
+	$( document ).ready(function() {
+		$("a").bind("click", function() {
 			var id = $(this).attr("data-id");
 			$.get(ctx + "/logs/" + id, function(data) {
 				$("#modal-data").html(data);
 				$("#modal").modal();
 			});
 		});
+	});
+		
 	</script>
 	</jsp:attribute>
 	<jsp:body>
