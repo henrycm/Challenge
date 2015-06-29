@@ -30,6 +30,8 @@ public class AccountService {
 	private UserRepository urepo;
 	@Resource
 	private AccountRepository arepo;
+	@Resource
+	private EventLogRepository erepo;
 
 	@Resource
 	private EventLogRepository lrepo;
@@ -61,6 +63,14 @@ public class AccountService {
 
 	public User getUserByOpenId(String openId) {
 		return urepo.findByOpenId(openId);
+	}
+
+	public List<EventLog> listEventLogs() {
+		return erepo.findAll();
+	}
+
+	public EventLog getEventLog(Long id) {
+		return erepo.findOne(id);
 	}
 
 	private Result handleUserAssignment(Event ev) {

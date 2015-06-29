@@ -37,8 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.openidLogin().loginPage("/auth/login").consumer(openIdConsumer())
 				.authenticationUserDetailsService(openIdUserDetailsService)
 				.defaultSuccessUrl("/").and().authorizeRequests()
-				.antMatchers("/auth/*").permitAll().anyRequest()
-				.authenticated();
+				.antMatchers("/auth/*").permitAll().antMatchers("/rest/*")
+				.permitAll().anyRequest().authenticated();
 		http.csrf().disable();
 
 	}

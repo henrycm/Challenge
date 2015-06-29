@@ -25,7 +25,6 @@
 	<!-- Header -->
 	<jsp:include page="/WEB-INF/pages/menu.jsp" />
 
-
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div id="main-frame" class="span10">

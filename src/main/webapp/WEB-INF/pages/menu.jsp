@@ -12,6 +12,7 @@
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li><a href="${ctx}/list">User List</a></li>
+					<li><a href="${ctx}/logs">Event logs</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="#">User:<sec:authentication
