@@ -613,7 +613,8 @@ public class Event {
     @XmlType(name = "", propOrder = {
         "account",
         "configuration",
-        "user"
+        "user",
+        "order"
     })
     public static class Payload {
 
@@ -623,6 +624,8 @@ public class Event {
         protected String configuration;
         @XmlElement(required = true)
         protected Event.Payload.User user;
+        
+        protected Order order;
 
         /**
          * Gets the value of the account property.
@@ -696,8 +699,16 @@ public class Event {
             this.user = value;
         }
 
+        public Order getOrder() {
+			return order;
+		}
 
-        /**
+		public void setOrder(Order order) {
+			this.order = order;
+		}
+
+
+		/**
          * <p>Java class for anonymous complex type.
          * 
          * <p>The following schema fragment specifies the expected content contained within this class.

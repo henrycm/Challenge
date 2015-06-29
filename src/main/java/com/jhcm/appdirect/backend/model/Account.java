@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -14,7 +16,12 @@ public class Account implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
 	private String accountIdentifier;
+	private String editionCode;
+	private String pricingDuration;
 	private String status;
 
 	@OneToMany(mappedBy = "account", orphanRemoval = true, cascade = { CascadeType.ALL })
@@ -42,6 +49,30 @@ public class Account implements Serializable {
 
 	public void setUsers(List<User> users) {
 		this.users = users;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getEditionCode() {
+		return editionCode;
+	}
+
+	public void setEditionCode(String editionCode) {
+		this.editionCode = editionCode;
+	}
+
+	public String getPricingDuration() {
+		return pricingDuration;
+	}
+
+	public void setPricingDuration(String pricingDuration) {
+		this.pricingDuration = pricingDuration;
 	}
 
 }

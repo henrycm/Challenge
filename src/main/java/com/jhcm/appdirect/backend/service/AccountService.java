@@ -11,10 +11,12 @@ import org.springframework.stereotype.Service;
 import com.jhcm.appdirect.backend.model.Account;
 import com.jhcm.appdirect.backend.model.EventLog;
 import com.jhcm.appdirect.backend.model.User;
+import com.jhcm.appdirect.backend.repositories.AccountRepository;
 import com.jhcm.appdirect.backend.repositories.EventLogRepository;
 import com.jhcm.appdirect.backend.repositories.UserRepository;
 import com.jhcm.appdirect.integration.RemoteService;
 import com.jhcm.appdirect.integration.xml.Event;
+import com.jhcm.appdirect.integration.xml.Result;
 import com.jhcm.appdirect.integration.xml.types.EventType;
 
 @Service
@@ -26,11 +28,13 @@ public class AccountService {
 
 	@Resource
 	private UserRepository urepo;
+	@Resource
+	private AccountRepository arepo;
 
 	@Resource
 	private EventLogRepository lrepo;
 
-	public void handleEvent(String url) throws Exception {
+	public Result handleEvent(String url) throws Exception {
 		Event ev = null;
 		if (url != null) {
 			String xml = remoteService.getXml(url);
@@ -40,17 +44,22 @@ public class AccountService {
 
 		log.debug("EventType:" + ev.getType());
 		if (ev.getType().equals(EventType.USER_ASSIGNMENT.name())) {
-			handleUserAssignment(ev);
+			return handleUserAssignment(ev);
 		} else if (ev.getType().equals(EventType.USER_UNASSIGNMENT.name())) {
-			handleUserUnassignment(ev);
+			return handleUserUnassignment(ev);
+		} else if (ev.getType().equals(EventType.SUBSCRIPTION_ORDER.name())) {
+			return handleSubscriptionOrder(ev);
+		} else if (ev.getType().equals(EventType.SUBSCRIPTION_CANCEL.name())) {
+			return handleSubscriptionCancell(ev);
 		}
+		return new Result(true, "Succeed");
 	}
 
 	public List<User> listUsers() {
 		return urepo.findAll();
 	}
 
-	private void handleUserAssignment(Event ev) {
+	private Result handleUserAssignment(Event ev) {
 		User u = urepo.findByEmail(ev.getPayload().getUser().getEmail());
 		if (u == null) {
 			u = new User();
@@ -61,19 +70,44 @@ public class AccountService {
 		u.setLanguage(ev.getPayload().getUser().getLanguage());
 		u.setOpenId(ev.getPayload().getUser().getOpenId());
 		Account a = u.getAccount();
-		if (a == null && ev.getPayload().getAccount().getAccountIdentifier() != null) {
+		if (a == null)
 			a = new Account();
-			a.setAccountIdentifier(ev.getPayload().getAccount().getAccountIdentifier());
-			a.setStatus(ev.getPayload().getAccount().getStatus());
-			u.setAccount(a);
-		}
+		a.setAccountIdentifier(ev.getPayload().getAccount()
+				.getAccountIdentifier());
+		a.setStatus(ev.getPayload().getAccount().getStatus());
+		u.setAccount(a);
+
 		urepo.save(u);
+		return new Result(true, "Succeed");
 	}
 
-	private void handleUserUnassignment(Event ev) {
+	private Result handleUserUnassignment(Event ev) {
 		User u = urepo.findByEmail(ev.getPayload().getUser().getEmail());
 		if (u != null)
 			urepo.delete(u);
+		return new Result(true, "Succeed");
+	}
+
+	private Result handleSubscriptionOrder(Event ev) throws Exception {
+		User u = urepo.findByEmail(ev.getCreator().getEmail());
+		if (u != null) {
+			u.getAccount().setEditionCode(
+					ev.getPayload().getOrder().getEditionCode());
+			u.getAccount().setPricingDuration(
+					ev.getPayload().getOrder().getPricingDuration());
+			return new Result(true, "Succeed");
+		} else
+			return new Result(false, "No user found for this creator: "
+					+ ev.getCreator().getEmail());
+	}
+
+	private Result handleSubscriptionCancell(Event ev) {
+		User u = urepo.findByEmail(ev.getCreator().getEmail());
+		if (u != null) {
+			arepo.delete(u.getAccount());
+			return new Result(true, "Succeed");
+		}
+		return new Result(false, "No account found.");
 	}
 
 	private void logEvent(String xml, String url) {

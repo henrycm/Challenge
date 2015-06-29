@@ -34,8 +34,7 @@ public class AppDirectEventController {
 		log.debug("token:" + token);
 		remoteService.debugHeaders(request);
 		try {
-			accountService.handleEvent(eventUrl);
-			return new Result(true, "Succeed!");
+			return accountService.handleEvent(eventUrl);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return new Result(false, e.getMessage());
