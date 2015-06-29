@@ -18,7 +18,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private UserDetailsService userDetailsService;
 
 	@Resource
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+	public void configureGlobal(AuthenticationManagerBuilder auth)
+			throws Exception {
 		auth.userDetailsService(userDetailsService);
 	}
 
@@ -29,8 +30,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.openidLogin().loginPage("/auth/login.jsp").defaultSuccessUrl("/").and().authorizeRequests()
-				.antMatchers("/auth/*").permitAll().antMatchers("/rest/*").permitAll().anyRequest().authenticated();
+		http.openidLogin().loginPage("/auth/login")
+				.defaultSuccessUrl("/").and().authorizeRequests()
+				.antMatchers("/auth/*").permitAll().antMatchers("/rest/*")
+				.permitAll().anyRequest().authenticated();
 		http.csrf().disable();
 
 	}
