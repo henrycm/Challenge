@@ -59,6 +59,10 @@ public class AccountService {
 		return urepo.findAll();
 	}
 
+	public User getUserByOpenId(String openId) {
+		return urepo.findByOpenId(openId);
+	}
+
 	private Result handleUserAssignment(Event ev) {
 		User u = urepo.findByOpenId(ev.getPayload().getUser().getOpenId());
 		if (u == null) {

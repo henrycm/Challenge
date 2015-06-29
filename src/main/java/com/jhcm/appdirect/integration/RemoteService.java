@@ -34,7 +34,8 @@ public class RemoteService {
 	private OAuthConsumer consumer;
 
 	public Event getFromXml(String xml) throws JAXBException {
-		InputStream stream = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
+		InputStream stream = new ByteArrayInputStream(
+				xml.getBytes(StandardCharsets.UTF_8));
 		Event ev = null;
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(Event.class);
@@ -57,7 +58,8 @@ public class RemoteService {
 		consumer.sign(request);
 		request.connect();
 		debugHeaders(request);
-		BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(
+				request.getInputStream()));
 		StringBuilder sb = new StringBuilder();
 
 		String line = null;
@@ -67,6 +69,10 @@ public class RemoteService {
 
 		request.disconnect();
 		return sb.toString();
+	}
+
+	public void verifyUrl(String url) {
+
 	}
 
 	public void debugHeaders(HttpURLConnection request) {

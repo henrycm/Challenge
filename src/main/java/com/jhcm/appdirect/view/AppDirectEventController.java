@@ -27,13 +27,12 @@ public class AppDirectEventController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public Result event(HttpServletRequest request,
-			@RequestParam(value = "eventUrl", required = false) String eventUrl,
-			@RequestParam(value = "token", required = false) String token) {
+			@RequestParam(value = "eventUrl", required = false) String eventUrl) {
 		log.debug("Event arrived!");
 		log.debug("Url:" + eventUrl);
-		log.debug("token:" + token);
 		remoteService.debugHeaders(request);
 		try {
+			remoteService.verifyUrl(eventUrl);
 			return accountService.handleEvent(eventUrl);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);

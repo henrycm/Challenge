@@ -1,10 +1,13 @@
 package com.jhcm.appdirect.config;
 
+import javax.annotation.Resource;
+
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.basic.DefaultOAuthConsumer;
 import oauth.signpost.signature.QueryStringSigningStrategy;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -17,11 +20,13 @@ import org.springframework.core.env.Environment;
 @PropertySource(value = "classpath:application.properties")
 public class AppConfig {
 
-	@Autowired
+	private Logger log = Logger.getLogger(AppConfig.class);
+
+	@Resource
 	private Environment env;
 
-	private final String consumerKey = "integration-challenge-full-29915";
-	private final String consumerSecret = "zD1aJQ2zGriMZCtL";
+	@Value("${appdirect.consumerkey}")
+	private String consumerKey;
 
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer placeHolderConfigurer() {
@@ -30,7 +35,10 @@ public class AppConfig {
 
 	@Bean
 	public OAuthConsumer getOAuthConsumer() {
-		OAuthConsumer o = new DefaultOAuthConsumer(consumerKey, consumerSecret);
+		log.debug("consumerKey:" + consumerKey);
+		OAuthConsumer o = new DefaultOAuthConsumer(
+				env.getProperty("appdirect.consumerkey"),
+				env.getProperty("appdirect.consumersecret"));
 		o.setSigningStrategy(new QueryStringSigningStrategy());
 		return o;
 	}

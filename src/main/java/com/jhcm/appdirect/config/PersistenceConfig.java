@@ -2,10 +2,12 @@ package com.jhcm.appdirect.config;
 
 import java.util.Properties;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -21,11 +23,15 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories(basePackages = { "com.jhcm.appdirect.backend.repositories" })
 public class PersistenceConfig {
 
+	@Resource
+	private Environment env;
+
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
 		factoryBean.setDataSource(dataSource());
-		factoryBean.setPackagesToScan(new String[] { "com.jhcm.appdirect.backend.model" });
+		factoryBean
+				.setPackagesToScan(new String[] { "com.jhcm.appdirect.backend.model" });
 
 		JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 		factoryBean.setJpaVendorAdapter(vendorAdapter);
@@ -37,15 +43,16 @@ public class PersistenceConfig {
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
-		dataSource.setUrl("jdbc:hsqldb:mem:userDB");
+		dataSource.setDriverClassName(env.getProperty("db.driver"));
+		dataSource.setUrl(env.getProperty("db.url"));
 		return dataSource;
 	}
 
 	@Bean
 	public PlatformTransactionManager transactionManager() {
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
-		transactionManager.setEntityManagerFactory(this.entityManagerFactory().getObject());
+		transactionManager.setEntityManagerFactory(this.entityManagerFactory()
+				.getObject());
 		return transactionManager;
 	}
 
@@ -59,7 +66,8 @@ public class PersistenceConfig {
 		properties.setProperty("hibernate.hbm2ddl.auto", "update");
 		properties.setProperty("hibernate.show_sql", "false");
 		properties.setProperty("hibernate.format_sql", "true");
-		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
+		properties.setProperty("hibernate.dialect",
+				env.getProperty("db.hibernate.dialect"));
 		return properties;
 	}
 }
