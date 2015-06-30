@@ -7,7 +7,6 @@ import oauth.signpost.basic.DefaultOAuthConsumer;
 import oauth.signpost.signature.QueryStringSigningStrategy;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -25,9 +24,6 @@ public class AppConfig {
 	@Resource
 	private Environment env;
 
-	@Value("${appdirect.consumerkey}")
-	private String consumerKey;
-
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer placeHolderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
@@ -35,7 +31,7 @@ public class AppConfig {
 
 	@Bean
 	public OAuthConsumer getOAuthConsumer() {
-		log.debug("consumerKey:" + consumerKey);
+		log.debug("Consumerkey:" + env.getProperty("appdirect.consumerkey"));
 		OAuthConsumer o = new DefaultOAuthConsumer(
 				env.getProperty("appdirect.consumerkey"),
 				env.getProperty("appdirect.consumersecret"));
