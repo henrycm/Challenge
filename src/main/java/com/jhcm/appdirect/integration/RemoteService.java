@@ -20,7 +20,8 @@ import javax.xml.bind.Unmarshaller;
 
 import oauth.signpost.OAuthConsumer;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.jhcm.appdirect.integration.xml.Event;
@@ -28,7 +29,7 @@ import com.jhcm.appdirect.integration.xml.Event;
 @Component
 public class RemoteService {
 
-	private Logger log = Logger.getLogger(RemoteService.class);
+	private  static final Logger log = LoggerFactory.getLogger(RemoteService.class);
 
 	@Resource
 	private OAuthConsumer consumer;

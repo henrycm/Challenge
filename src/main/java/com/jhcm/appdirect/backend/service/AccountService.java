@@ -5,7 +5,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.jhcm.appdirect.backend.model.Account;
@@ -21,7 +22,8 @@ import com.jhcm.appdirect.integration.xml.types.EventType;
 
 @Service
 public class AccountService {
-	private Logger log = Logger.getLogger(AccountService.class);
+	private static final Logger log = LoggerFactory
+			.getLogger(AccountService.class);
 
 	@Resource
 	private RemoteService remoteService;
@@ -133,7 +135,7 @@ public class AccountService {
 			el.setUrl(url);
 			lrepo.save(el);
 		} catch (Exception e) {
-			log.warn(e);
+			log.warn(e.getMessage());
 		}
 	}
 }
