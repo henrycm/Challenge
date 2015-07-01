@@ -18,7 +18,8 @@ import com.jhcm.appdirect.integration.xml.Result;
 @RequestMapping("/rest/event")
 public class AppDirectEventController {
 
-	private Logger log = LoggerFactory.getLogger(AppDirectEventController.class);
+	private Logger log = LoggerFactory
+			.getLogger(AppDirectEventController.class);
 
 	@Resource
 	private RemoteService remoteService;
@@ -31,9 +32,7 @@ public class AppDirectEventController {
 			@RequestParam(value = "eventUrl", required = false) String eventUrl) {
 		log.debug("Event arrived!");
 		log.debug("Url:" + eventUrl);
-		remoteService.debugHeaders(request);
 		try {
-			remoteService.verifyUrl(eventUrl);
 			return accountService.handleEvent(eventUrl);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);

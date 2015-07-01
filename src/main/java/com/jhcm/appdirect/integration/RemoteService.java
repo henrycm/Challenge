@@ -72,10 +72,6 @@ public class RemoteService {
 		return sb.toString();
 	}
 
-	public void verifyUrl(String url) {
-
-	}
-
 	public void debugHeaders(HttpURLConnection request) {
 		Map<String, List<String>> hdrs = request.getHeaderFields();
 		Set<String> hdrKeys = hdrs.keySet();
