@@ -15,7 +15,6 @@ import com.jhcm.appdirect.backend.model.User;
 import com.jhcm.appdirect.backend.repositories.AccountRepository;
 import com.jhcm.appdirect.backend.repositories.EventLogRepository;
 import com.jhcm.appdirect.backend.repositories.UserRepository;
-import com.jhcm.appdirect.integration.RemoteService;
 import com.jhcm.appdirect.integration.xml.Event;
 import com.jhcm.appdirect.integration.xml.Result;
 import com.jhcm.appdirect.integration.xml.types.EventType;
@@ -26,26 +25,13 @@ public class AccountService {
 			.getLogger(AccountService.class);
 
 	@Resource
-	private RemoteService remoteService;
-
-	@Resource
 	private UserRepository urepo;
 	@Resource
 	private AccountRepository arepo;
 	@Resource
-	private EventLogRepository erepo;
-
-	@Resource
 	private EventLogRepository lrepo;
 
-	public Result handleEvent(String url) throws Exception {
-		Event ev = null;
-		if (url != null) {
-			String xml = remoteService.getXml(url);
-			logEvent(xml, url);
-			ev = remoteService.getFromXml(xml);
-		}
-
+	public Result handleEvent(Event ev) throws Exception {
 		log.debug("EventType:" + ev.getType());
 		if (ev.getType().equals(EventType.USER_ASSIGNMENT.name())) {
 			return handleUserAssignment(ev);
@@ -68,11 +54,11 @@ public class AccountService {
 	}
 
 	public List<EventLog> listEventLogs() {
-		return erepo.findAll();
+		return lrepo.findAll();
 	}
 
 	public EventLog getEventLog(Long id) {
-		return erepo.findOne(id);
+		return lrepo.findOne(id);
 	}
 
 	private Result handleUserAssignment(Event ev) {
@@ -126,7 +112,7 @@ public class AccountService {
 		return new Result(false, "No account found.");
 	}
 
-	private void logEvent(String xml, String url) {
+	public void logEvent(String xml, String url) {
 		try {
 			log.debug("XML:" + xml);
 			EventLog el = new EventLog();

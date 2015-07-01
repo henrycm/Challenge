@@ -12,28 +12,33 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jhcm.appdirect.backend.service.AccountService;
 import com.jhcm.appdirect.integration.RemoteService;
+import com.jhcm.appdirect.integration.XMLUtils;
+import com.jhcm.appdirect.integration.xml.Event;
 import com.jhcm.appdirect.integration.xml.Result;
 
 @RestController
 @RequestMapping("/rest/event")
 public class AppDirectEventController {
 
-	private Logger log = LoggerFactory
-			.getLogger(AppDirectEventController.class);
-
-	@Resource
-	private RemoteService remoteService;
+	private Logger log = LoggerFactory.getLogger(AppDirectEventController.class);
 
 	@Resource
 	private AccountService accountService;
+	@Resource
+	private RemoteService remoteService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public Result event(HttpServletRequest request,
-			@RequestParam(value = "eventUrl", required = false) String eventUrl) {
+	public Result event(HttpServletRequest request, @RequestParam(value = "eventUrl", required = false) String eventUrl) {
 		log.debug("Event arrived!");
 		log.debug("Url:" + eventUrl);
+		if (eventUrl == null) {
+			return new Result(false, "No URL received");
+		}
 		try {
-			return accountService.handleEvent(eventUrl);
+			String xml = remoteService.getXml(eventUrl);
+			accountService.logEvent(xml, eventUrl);
+			Event ev = XMLUtils.getFromXml(xml);
+			return accountService.handleEvent(ev);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return new Result(false, e.getMessage());
