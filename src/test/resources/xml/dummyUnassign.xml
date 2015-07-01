@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <event xmlns:atom="http://www.w3.org/2005/Atom">
-	<type>USER_ASSIGNMENT</type>
+	<type>USER_UNASSIGNMENT</type>
 	<marketplace>
 		<baseUrl>https://acme.appdirect.com</baseUrl>
 		<partner>ACME</partner>
@@ -21,16 +21,6 @@
 		</account>
 		<configuration />
 		<user>
-			<attributes>
-				<entry>
-					<key>favoriteColor</key>
-					<value>green</value>
-				</entry>
-				<entry>
-					<key>hourlyRate</key>
-					<value>40</value>
-				</entry>
-			</attributes>
 			<email>test-email@appdirect.com</email>
 			<firstName>DummyFirst</firstName>
 			<language>fr</language>

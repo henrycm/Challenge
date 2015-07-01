@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jhcm.appdirect.backend.service.AccountService;
 
 @Controller
-public class UserController {
+public class AccountController {
 
 	@Resource
 	private AccountService accountService;

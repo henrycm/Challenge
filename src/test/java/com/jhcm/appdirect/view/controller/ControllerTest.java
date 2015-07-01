@@ -1,11 +1,15 @@
-package com.jhcm.appdirect.controller;
+package com.jhcm.appdirect.view.controller;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,16 +36,17 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.jhcm.appdirect.config.AppConfig;
+import com.jhcm.appdirect.config.MVCConfig;
 import com.jhcm.appdirect.config.PersistenceConfig;
 import com.jhcm.appdirect.integration.RemoteService;
 import com.jhcm.appdirect.view.AppDirectEventController;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = { AppConfig.class, PersistenceConfig.class })
-public class AppDirectEventControllerTest {
+@ContextConfiguration(classes = { AppConfig.class, PersistenceConfig.class, MVCConfig.class })
+public class ControllerTest {
 
-	private Logger log = LoggerFactory.getLogger(AppDirectEventControllerTest.class);
+	private Logger log = LoggerFactory.getLogger(ControllerTest.class);
 
 	@Resource
 	protected ApplicationContext appContext;
@@ -72,6 +77,22 @@ public class AppDirectEventControllerTest {
 		MvcResult result = this.mockMvc.perform(get("/rest/event?eventUrl=" + testUrl)).andExpect(status().isOk())
 				.andReturn();
 		assertThat("Result contains Succeed!", result.getResponse().getContentAsString(), containsString("Succeed"));
+	}
+
+	@Test
+	public void testUserUnAssignment() throws Exception {
+		log.debug("Testing User unAssignment...");
+		when(rs.getXml(any(String.class))).thenReturn(getXml("dummyUnassign.xml"));
+		final String testUrl = "dummyUrl";
+		MvcResult result = this.mockMvc.perform(get("/rest/event?eventUrl=" + testUrl)).andExpect(status().isOk())
+				.andReturn();
+		assertThat("Result contains Succeed!", result.getResponse().getContentAsString(), containsString("Succeed"));
+	}
+
+	@Test
+	public void testListUsers() throws Exception {
+		mockMvc.perform(get("/list")).andExpect(status().isOk()).andExpect(view().name("user"))
+				.andExpect(forwardedUrl("/WEB-INF/pages/user.jsp")).andExpect(model().attribute("users", hasSize(1)));
 	}
 
 	public String getXml(String filename) throws FileNotFoundException, IOException {
