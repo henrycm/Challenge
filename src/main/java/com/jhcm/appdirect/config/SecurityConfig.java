@@ -93,7 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				requestMatchers);
 		filter.setConsumerDetailsService(consumerDetailsService());
 		filter.setTokenServices(providerTokenServices());
-		//filter.setIgnoreMissingCredentials(false);
+		filter.setIgnoreMissingCredentials(false);
 		return filter;
 	}
 

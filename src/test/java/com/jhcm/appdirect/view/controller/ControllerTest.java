@@ -20,8 +20,10 @@ import java.nio.file.Paths;
 import javax.annotation.Resource;
 
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
@@ -42,6 +44,7 @@ import com.jhcm.appdirect.config.PersistenceConfig;
 import com.jhcm.appdirect.integration.RemoteService;
 import com.jhcm.appdirect.view.AppDirectEventController;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = { AppConfig.class, PersistenceConfig.class, MVCConfig.class })
@@ -91,7 +94,7 @@ public class ControllerTest {
 	}
 
 	@Test
-	public void testListUsers() throws Exception {
+	public void testUserList() throws Exception {
 		mockMvc.perform(get("/list")).andExpect(status().isOk()).andExpect(view().name("user"))
 				.andExpect(forwardedUrl("/WEB-INF/pages/user.jsp"))
 				.andExpect(model().attribute("page", hasProperty("content", hasSize(1))));
