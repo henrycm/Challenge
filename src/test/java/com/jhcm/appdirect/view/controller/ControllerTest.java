@@ -2,6 +2,7 @@ package com.jhcm.appdirect.view.controller;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
@@ -92,7 +93,8 @@ public class ControllerTest {
 	@Test
 	public void testListUsers() throws Exception {
 		mockMvc.perform(get("/list")).andExpect(status().isOk()).andExpect(view().name("user"))
-				.andExpect(forwardedUrl("/WEB-INF/pages/user.jsp")).andExpect(model().attribute("users", hasSize(1)));
+				.andExpect(forwardedUrl("/WEB-INF/pages/user.jsp"))
+				.andExpect(model().attribute("page", hasProperty("content", hasSize(1))));
 	}
 
 	public String getXml(String filename) throws FileNotFoundException, IOException {

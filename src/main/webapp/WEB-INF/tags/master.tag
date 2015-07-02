@@ -41,6 +41,9 @@
 	<script src="${ctx}/resources/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
 		var ctx = "${ctx}";
+		$(function() {
+			$('[data-toggle="popover"]').popover()
+		})
 	</script>
 	<jsp:invoke fragment="footer" />
 </body>
