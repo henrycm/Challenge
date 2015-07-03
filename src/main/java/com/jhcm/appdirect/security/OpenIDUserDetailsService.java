@@ -1,4 +1,4 @@
-package com.jhcm.appdirect.backend.service;
+package com.jhcm.appdirect.security;
 
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;

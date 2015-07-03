@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 @Entity
@@ -74,8 +75,7 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "[email:" + this.getEmail() + ", name:" + this.getFirstName()
-				+ "]";
+		return "[email:" + this.getEmail() + ", name:" + this.getFirstName() + "]";
 	}
 
 	public Long getId() {
@@ -110,6 +110,7 @@ public class User implements Serializable {
 		this.uuid = uuid;
 	}
 
+	@PrePersist
 	@PreUpdate
 	void onPersist() {
 		setLastUpdate(new Date());

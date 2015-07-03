@@ -13,6 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * RemoteService handles data request with appDirect servers. Uses OAuthConsumer
+ * to sign URL as needed from appDirect API.
+ */
 @Component
 public class RemoteService {
 

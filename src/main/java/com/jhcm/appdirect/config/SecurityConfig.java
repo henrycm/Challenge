@@ -33,7 +33,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import com.google.inject.internal.Lists;
-import com.jhcm.appdirect.backend.service.RestSecureddResourceProcessingFilter;
+import com.jhcm.appdirect.security.RestSecureddResourceProcessingFilter;
 
 @Configuration
 @EnableWebMvcSecurity

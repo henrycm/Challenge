@@ -44,6 +44,12 @@ import com.jhcm.appdirect.config.PersistenceConfig;
 import com.jhcm.appdirect.integration.RemoteService;
 import com.jhcm.appdirect.view.AppDirectEventController;
 
+/**
+ * 
+ * This a integration test from controller throughout services an data layer.
+ * Should maintain method order to test interface too.
+ *
+ */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
