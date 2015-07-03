@@ -20,6 +20,7 @@ import com.jhcm.appdirect.backend.repositories.EventLogRepository;
 import com.jhcm.appdirect.backend.repositories.UserRepository;
 import com.jhcm.appdirect.integration.xml.Event;
 import com.jhcm.appdirect.integration.xml.Result;
+import com.jhcm.appdirect.integration.xml.types.ErrorCode;
 import com.jhcm.appdirect.integration.xml.types.EventType;
 
 /**
@@ -118,7 +119,8 @@ public class AccountServiceImpl implements AccountService {
 			u.getAccount().setPricingDuration(ev.getPayload().getOrder().getPricingDuration());
 			return new Result(true, "Succeed");
 		} else
-			return new Result(false, "No user found for this creator: " + ev.getCreator().getOpenId());
+			return new Result(false, ErrorCode.USER_NOT_FOUND, "No user found for this creator: "
+					+ ev.getCreator().getOpenId());
 	}
 
 	private Result handleSubscriptionCancell(Event ev) {
@@ -127,7 +129,8 @@ public class AccountServiceImpl implements AccountService {
 			arepo.delete(u.getAccount());
 			return new Result(true, "Succeed");
 		}
-		return new Result(false, "No account found for user:" + ev.getCreator().getOpenId());
+		return new Result(false, ErrorCode.ACCOUNT_NOT_FOUND, "No account found for user:"
+				+ ev.getCreator().getOpenId());
 	}
 
 	@Override

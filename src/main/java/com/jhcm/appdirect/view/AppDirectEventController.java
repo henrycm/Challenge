@@ -15,6 +15,7 @@ import com.jhcm.appdirect.integration.RemoteService;
 import com.jhcm.appdirect.integration.XMLUtils;
 import com.jhcm.appdirect.integration.xml.Event;
 import com.jhcm.appdirect.integration.xml.Result;
+import com.jhcm.appdirect.integration.xml.types.ErrorCode;
 
 @RestController
 @RequestMapping("/rest/event")
@@ -32,7 +33,7 @@ public class AppDirectEventController {
 		log.debug("Event arrived!");
 		log.debug("Url:" + eventUrl);
 		if (eventUrl == null) {
-			return new Result(false, "No URL received");
+			return new Result(false, ErrorCode.CONFIGURATION_ERROR, "No URL received");
 		}
 		try {
 			String xml = remoteService.getXml(eventUrl);
@@ -41,7 +42,7 @@ public class AppDirectEventController {
 			return accountService.handleEvent(ev);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			return new Result(false, e.getMessage());
+			return new Result(false, ErrorCode.UNKNOWN_ERROR, e.getMessage());
 		}
 	}
 }
