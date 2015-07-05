@@ -1,4 +1,3 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
 <t:master title="Login page">
@@ -6,7 +5,7 @@
 	<form action="${ctx}/login/openid" method="post">
 		<input id="openid_identifier" name="openid_identifier" type="hidden"
 				value="https://www.appdirect.com/openid/id" />
-				<input name="real" type="hidden"
+				<input name="realm" type="hidden"
 				value="http://52.26.104.124:8080/Challenge/*" />
 			
 			<img alt="" src="${ctx}/resources/img/appdirect.jpg">
