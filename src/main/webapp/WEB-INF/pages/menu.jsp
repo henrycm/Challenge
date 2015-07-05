@@ -18,7 +18,7 @@
 					<li><a href="#">User:<sec:authentication
 								property="principal.username" /></a></li>
 					<li role="separator" class="divider"></li>
-					<li><a href="${ctx}/logout">LogOut</a></li>
+					<li><a href="${ctx}/logout">Logout</a></li>
 				</ul>
 			</div>
 		</div>

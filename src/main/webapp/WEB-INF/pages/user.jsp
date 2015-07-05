@@ -1,4 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
 <t:master title="User page">
@@ -29,7 +30,8 @@
 									data-content="Status:${u.account.status} Edition:${u.account.editionCode} Duration: ${u.account.pricingDuration}">${u.account.accountIdentifier}</a>
 					</c:if>
 						</td>
-					<td>${u.lastUpdate}</td>
+					<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm"
+								value="${u.lastUpdate}" /></td>
 				</tr>
 			</c:forEach>
 		</tbody>
