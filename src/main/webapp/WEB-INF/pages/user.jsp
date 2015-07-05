@@ -24,10 +24,10 @@
 					<td>${u.email}</td>
 					<td>${u.openId}</td>
 					<td>
-					<c:if test="${not empty u.account.accountIdentifier}">
+					<c:if test="${not empty u.account.id}">
 						<a class="btn btn-sm btn-default" data-toggle="popover"
 									title="Details" data-trigger="focus" role="button" tabindex="0"
-									data-content="Status:${u.account.status} Edition:${u.account.editionCode} Duration: ${u.account.pricingDuration}">${u.account.accountIdentifier}</a>
+									data-content="Status:${u.account.status} Edition:${u.account.editionCode} Duration: ${u.account.pricingDuration}">${u.account.editionCode}</a>
 					</c:if>
 						</td>
 					<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm"
