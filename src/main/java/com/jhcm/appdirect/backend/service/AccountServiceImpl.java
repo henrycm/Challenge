@@ -26,10 +26,7 @@ import com.jhcm.appdirect.integration.xml.types.EventType;
 /**
  * AccountServiceImpl is the facade for business services related with account
  * domain. Uses the data layer implemented in Spring data, so only interfaces
- * are created and rely over spring implementation for common CRUD methods and
- * in case of custom methods we extend method querys or even better we extend
- * and implements the interface with concrete technology like Hibernate or even
- * pure JDBC.
+ * are created and rely over spring implementation for common CRUD methods.
  *
  */
 @Service
@@ -114,13 +111,22 @@ public class AccountServiceImpl implements AccountService {
 
 	private Result handleSubscriptionOrder(Event ev) throws Exception {
 		User u = urepo.findByOpenId(ev.getCreator().getOpenId());
-		if (u != null) {
-			u.getAccount().setEditionCode(ev.getPayload().getOrder().getEditionCode());
-			u.getAccount().setPricingDuration(ev.getPayload().getOrder().getPricingDuration());
-			return new Result(true, "Succeed");
-		} else
-			return new Result(false, ErrorCode.USER_NOT_FOUND, "No user found for this creator: "
-					+ ev.getCreator().getOpenId());
+		if (u == null) {
+			u = new User();
+			u.setEmail(ev.getCreator().getEmail());
+			u.setFirstName(ev.getCreator().getFirstName());
+			u.setLanguage(ev.getCreator().getLanguage());
+			u.setOpenId(ev.getCreator().getOpenId());
+			u.setUuid(ev.getCreator().getUuid());
+			Account a = new Account();
+			u.setAccount(a);
+		}
+		u.getAccount().setStatus("ACTIVE");
+		u.getAccount().setEditionCode(ev.getPayload().getOrder().getEditionCode());
+		u.getAccount().setPricingDuration(ev.getPayload().getOrder().getPricingDuration());
+		u = urepo.save(u);
+		return new Result(true, "Succeed");
+
 	}
 
 	private Result handleSubscriptionCancell(Event ev) {
